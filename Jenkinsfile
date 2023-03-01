@@ -27,7 +27,7 @@ pipeline{
                   
               }
           }
-          stage('aws_s3_upload'){
+          stage('aws_s3'){
               steps{
                   withAWS(credentials:'aws-key', region:'us-east-1'){
                     s3Upload(bucket:'jenkins-sqlabs-amitb',path: 'project1/', includePathPattern:'result*')
