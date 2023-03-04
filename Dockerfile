@@ -16,4 +16,5 @@ EXPOSE 5000
 
 #pip  install flask
 
-CMD [ "flask", "run","--host","0.0.0.0","--port","5000"]
+# CMD [ "flask", "run","--host","0.0.0.0","--port","5000"]
+CMD ["python3.8", "app.py", "Amit"]
