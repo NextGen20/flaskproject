@@ -19,7 +19,7 @@ pipeline{
                   
                   sh 'sudo docker run --name flaskapp1 -d -p 5000:5000 flaskproject/project1:latest'
                   sh 'sudo docker ps'
-                  sh 'curl -v --no-tcp-nodelay $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > result.csv'
+                  sh 'curl -v --no-tcp-nodelay $(dig +short myip.opendns.com @resolver1.opendns.com):5000 &> result.csv'
                   sh 'date >> result.csv && ${BUILD_USER_FIRST_NAME} >> result.csv '
                   sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
                    
