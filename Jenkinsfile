@@ -21,7 +21,7 @@ pipeline{
                   sh 'sudo docker ps'
                   sh 'curl -v --no-tcp-nodelay $(dig +short myip.opendns.com @resolver1.opendns.com):5000 > result.csv'
                   sh 'date >> result.csv && ${BUILD_USER_FIRST_NAME} >> result.csv '
-                  sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
+//                   sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
                    
                   
                   
