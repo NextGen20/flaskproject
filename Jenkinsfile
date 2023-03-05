@@ -4,8 +4,8 @@ pipeline{
     stages{
        stage("build user") {
         steps{
-             wrap([$class: 'BuildUser']) {
-                sh' echo def user = env.BUILD_USER_ID'
+             def USER = wrap([$class: 'BuildUser']) {
+                sh' return env.BUILD_USER_ID'
   }
         }
   
@@ -25,10 +25,10 @@ pipeline{
           stage('UnieTest'){
               steps{
                   
-                  sh'echo username'
+                  sh'echo USER'
                   sh 'sudo docker run --name flaskapp1 -d -p 5000:5000 flaskproject/project1:latest'
                   sh ' echo $(curl -v --silent $(dig +short myip.opendns.com @resolver1.opendns.com):5000 2>&1 | grep OK ) > result.csv'
-                  sh 'date >> result.csv && username >> result.csv '
+                  sh 'date >> result.csv && USER >> result.csv '
                   sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
 
                  
