@@ -5,7 +5,7 @@ pipeline{
        stage("build user") {
         steps{
              wrap([$class: 'BuildUser']) {
-             sh 'name = "${BUILD_USER}"'
+    
   }
         }
   
@@ -28,7 +28,7 @@ pipeline{
                   
                   sh 'sudo docker run --name flaskapp1 -d -p 5000:5000 flaskproject/project1:latest'
                   sh ' echo $(curl -v --silent $(dig +short myip.opendns.com @resolver1.opendns.com):5000 2>&1 | grep OK ) > result.csv'
-                  sh 'date >> result.csv && $nameuser >> result.csv '
+                  sh 'date >> result.csv && ${BUILD_USER} >> result.csv '
                   sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
 
                  
