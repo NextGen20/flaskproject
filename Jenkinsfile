@@ -31,6 +31,7 @@ pipeline{
                   sh 'sudo docker run --name flaskapp1 -d -p 5000:5000 flaskproject/project1:latest'
                   sh ' echo $(curl -v --silent $(dig +short myip.opendns.com @resolver1.opendns.com):5000 2>&1 | grep OK ) >> result.csv'
                   sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
+                  
 
                  
                    
@@ -44,6 +45,7 @@ pipeline{
               steps{
                   withAWS(credentials:'aws-key', region:'us-east-1'){
                     s3Upload(bucket:'jenkins-sqlabs-amitb',path: 'project1/', includePathPattern:'result*')
+                    sh 'rm -r result.csv'
               }
           }
           }
