@@ -5,8 +5,8 @@ pipeline{
        stage("build user") {
         steps{
               wrap([$class: 'BuildUser']) {
-                sh 'echo ${BUILD_USER}'
-                sh 'date >> result.csv && ${BUILD_USER} >> result.csv '
+                sh 'echo ${BUILD_USER} >> result.csv'
+                sh 'date >> result.csv '
                 
   }
         }
