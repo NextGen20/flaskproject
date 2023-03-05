@@ -4,8 +4,8 @@ pipeline{
     stages{
        stage("build user") {
         steps{
-             def USER = wrap([$class: 'BuildUser']) {
-                sh' return env.BUILD_USER_ID'
+              wrap([$class: 'BuildUser']) {
+                sh 'echo ${BUILD_USER}'
   }
         }
   
