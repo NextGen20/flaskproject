@@ -7,7 +7,7 @@ pipeline{
               wrap([$class: 'BuildUser']) {
                 sh 'echo ${BUILD_USER}'
                 sh 'date >> result.csv && ${BUILD_USER} >> result.csv '
-                sh'cat result.csv'
+                
   }
         }
   
