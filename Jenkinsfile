@@ -8,8 +8,8 @@ pipeline{
        stage("build user") {
         steps{
               wrap([$class: 'BuildUser']) {
-                // sh 'echo ${BUILD_USER} >> result.json'
-                // sh 'date >> result.json '
+                 sh 'echo ${BUILD_USER} >> result.json'
+                 sh 'date >> result.json '
                 
   }
         }
