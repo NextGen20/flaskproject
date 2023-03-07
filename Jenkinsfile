@@ -51,8 +51,11 @@ pipeline{
           }
           }
           stage('Stop & Clean'){
-            sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
+            steps{
+         sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
             sh 'rm -r result.json'
+            }
+           
             
           }
           
