@@ -4,15 +4,15 @@ pipeline{
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
       }
     
-    stages{
-       stage("build user") {
-        steps{
-              wrap([$class: 'BuildUser']) {
-                sh 'echo ${BUILD_USER} >> result.json'
-                sh 'date >> result.json '
+//     stages{
+//        stage("build user") {
+//         steps{
+//               wrap([$class: 'BuildUser']) {
+//                 sh 'echo ${BUILD_USER} >> result.json'
+//                 sh 'date >> result.json '
                 
-  }
-        }
+//   }
+//         }
   
   
 }
