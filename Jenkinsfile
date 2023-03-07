@@ -8,8 +8,8 @@ pipeline{
        stage("build user") {
         steps{
               wrap([$class: 'BuildUser']) {
-                sh 'echo ${BUILD_USER} >> result.json'
-                sh 'date >> result.json '
+                // sh 'echo ${BUILD_USER} >> result.json'
+                // sh 'date >> result.json '
                 
   }
         }
@@ -28,16 +28,14 @@ pipeline{
                          sh 'sudo docker run --name flaskapp1 -d -p 5000:5000 flaskproject/project1:latest'
                     }
           }
-          stage("UniTest") {
+         stage("testing") {
     steps {
         script {
-            
-            STATUS = sh(script: "curl -v \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
+           STATUS = sh(script: "curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
             sh 'echo "$STATUS" >> result.json'
             sh 'echo "$TIME" >> result.json'
-            
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"amitbachar\"}, \"Date\": {\"S\": \"${TIME}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
+                sh "aws dynamodb put-item --table-name -result --item '{\"User\": {\"S\": \"${BUILD_USER}\"}, \"Date\": {\"S\": \"${TIME}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
             }
         }
     }
