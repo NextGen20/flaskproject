@@ -31,9 +31,8 @@ pipeline{
             def USER
             STATUS = sh(script: "curl -v \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \" 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
             sh 'curl -I $(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep "HTTP/1.1 200 OK" >> result.json'
-           
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-                sh "aws dynamodb put-item --table-name test-result --item '{\"user\": {\"S\": \"${BUILD_USER}\"}, \"date\": {\"S\": \"date\"}, \"state\": {\"S\": \"${STATUS}\"}}'"
+                sh "aws dynamodb put-item --table-name test-result --item '{\"User\": {\"S\": \"${BUILD_USER}\"}, \"Date\": {\"S\": \"date\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
             }
         }
     }
