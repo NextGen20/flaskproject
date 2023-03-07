@@ -1,7 +1,8 @@
 pipeline{
     agent {label 'slave1'}
     environment {
-    TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim() >> result.json
+    TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
+     sh 'echo "$TIME" >> result.json'
       }
     
     stages{
