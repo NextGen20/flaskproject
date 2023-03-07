@@ -26,7 +26,7 @@ pipeline{
              sh 'echo "$STATUS" >> result.json'
              sh 'echo "$TIME" >> result.json'
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"date\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
+            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${TIME}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
             }
             
         }
