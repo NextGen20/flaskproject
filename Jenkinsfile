@@ -6,17 +6,7 @@ pipeline{
       }
     
     stages{
-//        stage("build user") {
-//         steps{
-//               wrap([$class: 'BuildUser']) {
-//                  sh 'echo ${BUILD_USER} >> result.json'
-//                  sh 'date >> result.json '
-                
-//   }
-//         }
-  
-  
-// }
+
           stage("Git_Clone"){
               steps{
                   git branch: 'main', url: 'https://github.com/NextGen20/flaskproject.git'
@@ -36,7 +26,7 @@ pipeline{
              sh 'echo "$STATUS" >> result.json'
              sh 'echo "$TIME" >> result.json'
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${TIME}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
+            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"date\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
             }
             
         }
@@ -52,7 +42,7 @@ pipeline{
           }
           stage('Stop & Clean'){
             steps{
-         sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
+            sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
             sh 'rm -r result.json'
             }
            
