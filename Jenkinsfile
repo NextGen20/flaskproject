@@ -31,7 +31,7 @@ pipeline{
           stage("UniTest") {
     steps {
         script {
-            def STATUS
+            
             STATUS = sh(script: "curl -v \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
             sh 'echo "$STATUS" >> result.json'
             sh 'echo "$TIME" >> result.json'
