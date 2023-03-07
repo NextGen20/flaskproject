@@ -4,15 +4,15 @@ pipeline{
     TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
       }
     
-//     stages{
-//        stage("build user") {
-//         steps{
-//               wrap([$class: 'BuildUser']) {
-//                 sh 'echo ${BUILD_USER} >> result.json'
-//                 sh 'date >> result.json '
+    stages{
+       stage("build user") {
+        steps{
+              wrap([$class: 'BuildUser']) {
+                sh 'echo ${BUILD_USER} >> result.json'
+                sh 'date >> result.json '
                 
-//   }
-//         }
+  }
+        }
   
   
 }
@@ -37,7 +37,7 @@ pipeline{
             sh 'echo "$TIME" >> result.json'
             
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"amitbachar\"}, \"Date\": {\"S\": \"${TIME}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
+            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER}\"}, \"Date\": {\"S\": \"${TIME}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
             }
         }
     }
@@ -50,6 +50,6 @@ pipeline{
               }
           }
           }
-          }
+          
 }
 
