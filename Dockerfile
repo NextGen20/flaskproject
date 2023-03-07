@@ -3,17 +3,18 @@ FROM python:3.8-slim-buster
 # Create app directory
 WORKDIR /app
 
-# Install flask
+
 COPY requirements.txt ./
 
+#upgrade pip+install flask
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Bundle app source
 COPY . .
 
-#port expose
+#port expose for web app
 EXPOSE 5000
 
-#run with param
+#run on command line with param
 CMD ["python3.8", "app.py", "Bachar"]
