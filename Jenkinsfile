@@ -2,7 +2,7 @@ pipeline{
     agent {label 'slave1'}
     environment {
     // TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
-    def BUILDVERSION = sh(script: "echo `date +%s`", returnStdout: true).trim()
+    def BUILDVERSION = sh(script: "echo `date`", returnStdout: true).trim()
      
       }
     
