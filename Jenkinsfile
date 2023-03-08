@@ -1,9 +1,9 @@
 pipeline{
     agent {label 'slave1'}
     environment {
-    
+        
     def DATE = sh(script: "echo `date`", returnStdout: true).trim()
-    
+
       }
     
     stages{
@@ -29,7 +29,6 @@ pipeline{
             sh 'echo "$STATUS_NAME" >> result.json'
             sh 'echo "$DATE" >> result.csv'
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-            // sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${DATE}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS_HTTP}\"}}'"
             sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${DATE}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS_HTTP}\"}, \"TEST_NAME\": {\"S\": \"${STATUS_NAME}\"}}'"
             }
             
@@ -47,7 +46,6 @@ pipeline{
           stage('Stop&Clean'){
             steps{
             sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
-            
             sh 'rm -r result.json'
             }
            
