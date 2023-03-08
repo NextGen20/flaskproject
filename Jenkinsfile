@@ -3,7 +3,7 @@ pipeline{
     environment {
     
     def DATE = sh(script: "echo `date`", returnStdout: true).trim()
-    sh 'DATE >> result.csv'
+    
       }
     
     stages{
@@ -27,6 +27,7 @@ pipeline{
              sh 'echo "$STATUS_HTTP" >> result.json'
             STATUS_NAME = sh(script: "curl -v \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"hello Bachar\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
             sh 'echo "$STATUS_NAME" >> result.json'
+            sh 'DATE >> result.csv'
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
             sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${DATE}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS_HTTP}\"}}'"
             }
