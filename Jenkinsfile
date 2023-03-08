@@ -1,9 +1,9 @@
 pipeline{
     agent {label 'slave1'}
     environment {
-    // TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
-    def BUILDVERSION = sh(script: "echo `date`", returnStdout: true).trim()
-     
+    
+    def DATE = sh(script: "echo `date`", returnStdout: true).trim()
+    sh 'DATE >> result.csv'
       }
     
     stages{
@@ -23,11 +23,12 @@ pipeline{
          stage("Unitest & DynamoDB") {
     steps {
         script {
-           STATUS = sh(script: "curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
-             sh 'echo "$STATUS" >> result.json'
-            //  sh 'echo "$TIME" >> result.json'
+           STATUS_HTTP = sh(script: "curl -I \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"HTTP/1.1 200 OK\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
+             sh 'echo "$STATUS_HTTP" >> result.json'
+            STATUS_NAME = sh(script: "curl -v \$(dig +short myip.opendns.com @resolver1.opendns.com):5000 | grep \"hello Bachar\" | tr -d \"\\r\\n\"", returnStdout: true).trim()
+            sh 'echo "$STATUS_NAME" >> result.json'
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${BUILDVERSION}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
+            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${DATE}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS_HTTP}\"}}'"
             }
             
         }
