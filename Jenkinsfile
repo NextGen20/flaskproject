@@ -14,7 +14,7 @@ pipeline{
                   
               }
           }
-                stage('Build & run image'){
+                stage('Build & Run image'){
                     steps{
                          sh 'sudo docker build -t flaskproject/project1:latest .'
                          sh 'sudo docker run --name flaskapp1 -d -p 5000:5000 flaskproject/project1:latest'
