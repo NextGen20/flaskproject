@@ -2,7 +2,7 @@ pipeline{
     agent {label 'slave1'}
     environment {
     // TIME = sh(script: 'date "+%Y-%m-%d %H:%M:%S"', returnStdout: true).trim()
-    date = LocalDate.now();
+    def BUILDVERSION = sh(script: "echo `date +%s`", returnStdout: true).trim()
      
       }
     
@@ -27,7 +27,7 @@ pipeline{
              sh 'echo "$STATUS" >> result.json'
             //  sh 'echo "$TIME" >> result.json'
             withAWS(credentials: 'aws-key', region: 'us-east-1') {
-            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${env.date}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
+            sh "aws dynamodb put-item --table-name result --item '{\"User\": {\"S\": \"${BUILD_USER_ID}\"}, \"Date\": {\"S\": \"${BUILDVERSION}\"}, \"TEST_RESULT\": {\"S\": \"${STATUS}\"}}'"
             }
             
         }
