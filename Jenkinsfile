@@ -40,7 +40,7 @@ pipeline{
               }
           }
           }
-          stage('Stop&Clean&Logile'){
+          stage('Stop&Clean&Logfile'){
             steps{
             sh 'sudo docker stop flaskapp1 && sudo docker rm flaskapp1'
             sh 'result.json >> Logfile.txt'
