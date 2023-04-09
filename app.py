@@ -5,6 +5,7 @@ from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
 import sys
+import subprocess
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_site.db'
@@ -18,16 +19,18 @@ class Profile(db.Model):
     def __str__(self):
         return f"Name:{self.first_name}, last:{self.last_name}"
     
-    @app.route("/signup", methods=["GET", "POST"])
-    def signup():
-        if request.method == "POST":
-            first_name = request.form.get("fname")
-            last_name = request.form.get("lname")
-            p = Profile(first_name=first_name, last_name=last_name)
-            db.session.add(p)
-            db.session.commit()
-            return f"{first_name} {last_name} "
-        return render_template("signup.html")
+@app.route("/docker", methods=["GET", "POST"])
+def docker():
+    if request.method == "POST":
+        image_name = request.form.get("image_name")
+        subprocess.run(['docker', 'build', '-t', f"{image_name}", '.'])
+        subprocess.run(['git', 'init'])
+        subprocess.run(['git', 'add', '.'])
+        subprocess.run(['git', 'commit', '-m', f"Pushing {image_name} Docker image to GitHub"])
+        subprocess.run(['git', 'remote', 'add', 'origin', 'https://github.com/NextGen20/flaskproject.git'])
+        subprocess.run(['git', 'push', '-u', 'origin', 'main'])
+        return f"Docker image {image_name} created and pushed to GitHub"
+    return render_template("docker.html")
 
 @app.route("/homepage")
 def homepage():
