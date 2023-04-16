@@ -249,7 +249,7 @@ def jenkins_create_user():
             'email': mail
         }
         
-        # Create the new user
+        #
         server.create_job()
 
     return render_template('jenkins.html')
